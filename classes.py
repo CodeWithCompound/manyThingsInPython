@@ -4,10 +4,10 @@ from decimal import Decimal
 # what i learned:
 # kw_only (line 6) enforces you to include the arguments (see line XXXXXXXX)
 # not code related but sku means stock keeping unit 
-# rounding (line xxxxxxxxxxxx) to the second decimal point
-# @property (line xxxxxxxxxxxx) lets you write x.atr instead of x.atr()
-# repr=False (line xxxxxxxxxxx) makes the whole field not appear and is,  from what i gathered great for internal use 
-# field(default_factory=list) (line xxxxxxxxx) prevents a bug where, if it was "tags: list =[]" it would make every product point to this ONE list, which we don't want
+# rounding (line 39) to the second decimal point
+# @property (line 26) lets you write x.atr instead of x.atr()
+# repr=False (line 18) makes the whole field not appear and is,  from what i gathered great for internal use 
+# field(default_factory=list) (line 16) prevents a bug where, if it was "tags: list =[]" it would make every product point to this ONE list, which we don't want
 @dataclass(frozen=True, slots=True, kw_only=True)
 class Product:
     sku: str 
