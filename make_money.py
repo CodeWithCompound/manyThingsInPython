@@ -9,7 +9,7 @@ class Game:
         income: float = 0.1,
         income_mult: float = 1.0,
     ):
-        self.running = running
+        self.running: bool = running
         self.money: float = money
         self.income: float = income
         self.income_mult: float = income_mult
@@ -19,27 +19,44 @@ class Game:
 
         self.first_load: bool = True
 
-    def make_money(self):
+    def make_money(self) -> None:
         self.money = self.money + self.income * self.income_mult
 
-    def upgrade_income(self):
+    def upgrade_income(self) -> None:
         if self.upgrade_income_cost <= self.money:
+            old: bool = self.income
             self.income = self.income + 0.1
             self.money = self.money - self.upgrade_income_cost
             self.upgrade_income_cost = self.income * (20 + self.income)
 
-    def upgrade_income_mult(self):
+            print(f"old income: {old}")
+            print(f"new income: {self.income}")
+        elif self.money > 0:
+            print("how did you get debt?..\n")
+        else:
+            short: float = self.upgrade_income_cost - self.money
+            print(f"you do not have enough money. you are {short:.1f} short\n")
+
+    def upgrade_income_mult(self) -> None:
         if self.upgrade_income_mult_cost <= self.money:
+            old: float = self.income_mult
             self.income_mult = self.income_mult + 0.1
             self.money = self.money - self.upgrade_income_mult_cost
             self.upgrade_income_mult_cost = self.income * (20 * self.income_mult)
+            print(f"old income *: {old}")
+            print(f"new income *: {self.income_mult}")
+
+        elif self.money < 0:
+            print("how did you get debt?..\n")
+        else:
+            short: float = self.upgrade_income_mult_cost - self.money
+            print(f"you do not have enough money. you are {short:.1f} short\n")
 
 
 def u_sure(what: str) -> bool:
     while True:
         print(f"are you sure that you want to {what}? (y/n)")
-
-        cmd = input().strip().lower()
+        cmd: str = input().strip().lower()
 
         if cmd == "y":
             return True
@@ -51,16 +68,16 @@ def u_sure(what: str) -> bool:
 # i should format the below better
 def welc():
     print(
-        "Welcome to this little game. please do not expect anything other than a waste of time"
+        "\n................................\nWelcome to this little game. please do not expect anything other than a waste of time"
     )
-    print("v 0.0.2")
-    print("simply a little thing i did to pass time and practice.")
+    print("v 0.0.3")
+    print("simply a little thing i did to pass time and practice coding\n")
     help()
 
 
 def help():
     print(
-        "use + to make money once\n use ++ to make money 10 times\n use ? to see all stats\n u1 and u2 for upgrading your income and income multiplicator\nuse x! to quit"
+        "use + to make money once\nuse ++ to make money 10 times\nuse ? to see all stats\nu1 and u2 for upgrading your income and income multiplicator\nuse x! to quit\n"
     )
 
 
@@ -79,22 +96,16 @@ while True:
         instance.make_money()
 
     elif cmd == "u1":
-        if u_sure("upgrade your income?"):
-            # add cost of upgrade in the question
-            old = instance.income
+        if u_sure(f"upgrade your income (cost: {instance.upgrade_income_cost:.2f})"):
             instance.upgrade_income()
-            print(f"old income: {old}")
-            print(f"new income: {instance.income}")
         else:
             continue
 
     elif cmd == "u2":
-        if u_sure("upgrade your incomes multiplyer"):
-            # add cost of upgrade in the question
-            old = instance.income_mult
+        if u_sure(
+            f"upgrade your incomes multiplyer (cost: {instance.upgrade_income_mult_cost:.2f})"
+        ):
             instance.upgrade_income_mult()
-            print(f"old income *: {old}")
-            print(f"new income *: {instance.income_mult}")
 
         else:
             continue
