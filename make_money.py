@@ -24,14 +24,14 @@ class Game:
 
     def upgrade_income(self) -> None:
         if self.upgrade_income_cost <= self.money:
-            old: bool = self.income
+            old: float = self.income
             self.income = self.income + 0.1
             self.money = self.money - self.upgrade_income_cost
             self.upgrade_income_cost = self.income * (20 + self.income)
 
             print(f"old income: {old}")
             print(f"new income: {self.income}")
-        elif self.money > 0:
+        elif self.money < 0:
             print("how did you get debt?..\n")
         else:
             short: float = self.upgrade_income_cost - self.money
